@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "lib": ["esnext"],
+      "module": "commonjs",
+      "outDir": "dist",
+      // keep this commented to avoid linter errors when accessing files from root folder
+      //"rootDir": "src",
+      "skipLibCheck": true,
+      "strict": true,
+      "target": "es2022",
+      // parse json files automatically
+      "resolveJsonModule": true,
+      // avoid the followgin error
+      // Property has no initializer and is not definitely assigned in the constructor
+      "strictPropertyInitialization": false,
+      "moduleResolution": "node",
+    }
+  }

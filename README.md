@@ -1,67 +1,76 @@
-# Context
+# Description
 
-As a senior product engineer in the team, you suggested to build an internal tool for our customer success team. You agreed with the product team on the following milestones.
+This take home test for a Software engineer position at Inato.
 
-## Step 1: Web API
+# Requirements
 
-We first need to be able to query the list of ongoing clinical trials for a given sponsor. We already have access to a third-party API (represented by [this file](trials.json)) listing all clinical trials, and we are going to build a wrapper around it.
+The minimal requirements to run the api server and the cli tool are:
 
-A trial is _ongoing_ if:
+* npm 9.6.4
+* yarn 1.22.19
 
-- its start date is in the past
-- its end date is in the future
-- it has not been canceled
+# Technical stack
 
-Here is the payload you should obtain when querying ongoing clinical trials for the sponsor "Sanofi":
+For the API server this are the libraries I chose for this challenge:
 
-```json
-[
-  {
-    "name": "Olaparib + Sapacitabine in BRCA Mutant Breast Cancer",
-    "start_date": "2019-01-01",
-    "end_date": "2025-08-01",
-    "sponsor": "Sanofi"
-  },
-  {
-    "name": "Topical Calcipotriene Treatment for Breast Cancer Immunoprevention",
-    "start_date": "2018-03-20",
-    "end_date": "2032-09-10",
-    "sponsor": "Sanofi"
-  }
-]
-```
+* Apollo
+* Graphql
+* Nexus
+* Typescript 5
 
-Example stack: http server exposing REST endpoint that serves json payloads.
+And for the CLI tool:
 
-## Step 2: Command-line interface
+* Commander
+* Figler
+* Typescript 5
 
-We will then build a command-line interface that displays the list of ongoing clinical trials for a given country code. It will be deployed on the computers of the customer success team. We already have access to a [file](countries.json) that maps country codes to country names. We will leverage what we have already built in the previous step.
+For both applications we use `jest` as unit testing library.
+The stack choose here was inspired from the one used at Inato according to this [blog](https://stackshare.io/inato/marketplace). I am not familiar with this stack but I found it pretty straightforward to build the assignment.
+  
+# Download the source code
 
-Here is the output you should get for the country code "FR":
+1. `git clone https://github.com/ESegundoRolon/senior-take-home-test`
+2. `cd senior-take-home-test`
 
-```txt
-Olaparib + Sapacitabine in BRCA Mutant Breast Cancer, France
-Topical Calcipotriene Treatment for Breast Cancer Immunoprevention, France
-```
+# How to run the api server
 
-# Instructions
+1. After downloading the source code, run `yarn` in the root `senior-take-home-test` folder to install dependencies.
+2. Run `yarn api`
+3. Go to `http://localhost:4000`
 
-- [ ] Clone this repository (do **not** fork it)
-- [ ] Implement the features step-by-step, documenting your architecture and design choices along the way
-- [ ] Publish it on GitHub (or equivalent)
-- [ ] Send us the link and tell us approximatively how much time you spent on this assignment
+# How to run the CLI tool
 
-## Guidelines
+1. After downloading the source code, run `yarn` in the root `senior-take-home-test` folder to install dependencies.
+2. Run `yarn cli -h` to see the available commands
+3. For example to query clinical trials with France as country, run `yarn cli -c fr`
 
-This assignment is limited in scope and could be solved by writing all the code in a single file. Still, we want you to architect your tests and your code as if you were building the first parts of a larger-scale software. Imagine that a lot of features are going to be added in the future, by other engineers. Focus on maintainability and extensibility, even though it is clearly over-engineering at this point.
+# Architecture
 
-We expect you to spend no more than 5 hours on this assignment.
+## Code base
+Either the `api`, `cli` or the `common` folders respect the same layers inside of each context:
 
-You are allowed to use the technologies of your choice, but if you are looking for inspiration use [ours](https://stackshare.io/inato/marketplace). You are encouraged to make good use of open-source code.
+* Commands
+* Models
+* Services 
 
-## Out of scope
+The project contains the source code for the API server and the CLI tool inside `packages` folder to facilitate the sharing of `clinicalTrial` context, which lives in the `common` folder as it's a shared context within both applications. I considered that even if both applications do not use the same `services`, splitting the same context will lead to be harder to maintain.
 
-- Authentication / authorization
-- Usage of third party tools, like a CI service
-- Performance
-- Security
+As the `clinicalTrial` context define a common business language and encapsulates business logic exposed through the public interfaces in the `services`, which are needed for our applications (in this case the API server and the CLI tool), it may be good idea to separate this from the main repository and share it as an internal library.
+
+The `Country` context lives only inside `cli` application as it's not re-used anywhere for now, but eventually can be separated to be shared with other applications as an internal library.
+
+## Tests
+
+All unit tests and integration tests lives in the `__test__` folder which is the default folder set by `jest`. 
+This is not ideal as we may want to run batteries of tests by application or the test time will increase if the tests for all aplications live inside the same repository.
+I did not manage to configure `jest` to run the tests from the application directly as described on [this guide](https://swizec.com/blog/how-to-configure-jest-with-typescript/).
+The configuration proposed in that guide was not compatible with my `tsconfig.json` configuration for the `resolveJsonModule` attribute.
+I started with the default `jest` configuration to build the solution but at the end I wanted to refactor this to have for example `./packages/api/src/__tests__/`, but I ran out of time.
+
+## Time spent
+As I mentioned earlier, I am not familiar with the stack and that make me a lit slower than usual as I was reading lots of documentations while building the solution. I got delayed a bunch of times for the following reasons:
+
+1. Adding date scalar, I tried to use the `graphql-iso-date` which it's referenced in some graphql doc, but this lib seems not maintained anymore and it's [not compatible with graphql v16](https://github.com/excitement-engineer/graphql-iso-date/issues/150).
+2. Understand `tsconfig.json` and their attributes to be able to parse a json file directly using the `resolveJsonModule`.
+3. Using `@apollo/server` v4 uses the `await` keyword at a top level file which it's not a module in their [examples when setting up the server](https://www.apollographql.com/docs/apollo-server/migration), this leads a compilation error so I tried to target `es2022` or changing the `module` to a compatible one but I broke all imports so I finally refactor that to use standar promises notation.
+
