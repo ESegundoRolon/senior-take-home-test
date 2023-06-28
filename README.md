@@ -1,5 +1,5 @@
 # About me
-I currently a backend engineer with a background in fullstack development with a total of 9 years of experience. Mostly worked on Java-Spring-Hibernate and ReactJS stacks but there have been occasions where I worked with other languages such as Golang or Ruby on Rails in my current job at Qonto.
+I am currently a backend engineer with a background in fullstack development with a total of 9 years of experience. Mostly worked on Java-Spring-Hibernate and ReactJS stacks but there have been occasions where I worked with other languages such as Golang or Ruby on Rails in my current job at Qonto.
 
 # Description
 
