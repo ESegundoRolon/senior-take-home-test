@@ -74,7 +74,7 @@ As I mentioned earlier, I am not familiar with the stack and that make me a lit 
 2. Understand `tsconfig.json` and their attributes to be able to parse a json file directly using the `resolveJsonModule`.
 3. Migrating from `apollo-server` to `@apollo/server`, in [GraphQL Nexus docs](https://nexusjs.org/docs/getting-started/tutorial/chapter-setup-and-first-query) the tutorials refer to `apollo-server` which is deprecated so I first did the set-up with the deprecated library to finally need to migrate and figure out how to integrate `nexus` with `@apollo/server`.
 4. Using `@apollo/server` v4 uses the `await` keyword at a top level file which it's not a module in their [examples when setting up the server](https://www.apollographql.com/docs/apollo-server/migration), this leads a compilation error so I tried to target `es2022` or changing the `module` to a compatible one but I broke all imports so I finally refactor that to use standar promises notation.
-5. Tried to remove the `data` and the `clinicalTrials` attributes from the JSON structure response of the server to match the exact expected result but I did not find out any configuration override on `@apollo/server` for the query type. Should be doable though.
+5. Tried to remove the `data` and the `clinicalTrials` attributes from the JSON structure response of the server to match the exact expected result but I did not find out any configuration override on `@apollo/server` for modifying the response structure. It should be doable though.
 
 The total time spend in the assignment it's **about 6 total hours**.
 
