@@ -6,14 +6,14 @@ This take home test for a Software engineer position at Inato.
 
 The minimal requirements to run the api server and the cli tool are:
 
-* npm 9.6.4
-* yarn 1.22.19
+* npm
+* yarn
 
 # Technical stack
 
 For the API server this are the libraries I chose for this challenge:
 
-* Apollo
+* Apollo/server
 * Graphql
 * Nexus
 * Typescript 5
