@@ -8,7 +8,7 @@ it('returns hello with the provided name', async () => {
   });
 
   const response = await testServer.executeOperation({
-    query: 'query GetClinicalTrials($name:String!){clinicalTrials(name:$name){end_date name sponsor start_date}}',
+    query: 'query GetClinicalTrials($name: String!){ clinicalTrials(name: $name){ end_date name sponsor start_date } }',
     variables: { name: 'Sanofi' },
   });
 
@@ -18,4 +18,5 @@ it('returns hello with the provided name', async () => {
   assert(response.body.kind === 'single');
   expect(response.body.singleResult.errors).toBeUndefined();
   expect(response.body.singleResult.data?.clinicalTrials).toBeDefined();
+  // TODO test structure response, will be easy to make this deterministic if we can initialize a test db
 });

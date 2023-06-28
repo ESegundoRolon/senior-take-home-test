@@ -1,5 +1,5 @@
 import { extendType, objectType, stringArg, nonNull } from "nexus";
-import { fetchOngoingClinicalTrialsBySponsor } from "../../../common/src/clinicalTrial/services/index";
+import { fetchOngoingClinicalTrialsBySponsor, fetchAllClinicalTrials } from "../../../common/src/clinicalTrial/services";
  
 export const ClinicalTrial = objectType({
   name: "ClinicalTrial",
@@ -21,7 +21,8 @@ export const ClinicalTrialQuery = extendType({
         name: nonNull(stringArg()),
       },
       resolve(_, { name }) {
-          return fetchOngoingClinicalTrialsBySponsor(name!)
+          const clinicalTrials = fetchAllClinicalTrials();
+          return fetchOngoingClinicalTrialsBySponsor(clinicalTrials, name!)
       }
     })
   },

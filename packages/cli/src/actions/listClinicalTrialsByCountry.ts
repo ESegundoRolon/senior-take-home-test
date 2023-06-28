@@ -1,4 +1,4 @@
-import { fetchClinicalTrialsByCountry } from "../../../common/src/clinicalTrial/services";
+import { fetchClinicalTrialsByCountry, fetchAllClinicalTrials } from "../../../common/src/clinicalTrial/services";
 import { fetchCountryByCode } from "../country/services/fetchCountryByCode";
 import { ClinicalTrialDecorator } from "../outputDecorator/clinicalTrialDecorator";
 
@@ -13,7 +13,9 @@ export const listClinicalTrialsByCountry =(countryCode: string) => {
     }
 
     const validatedCountryCode = country!.code!;
-    const results = fetchClinicalTrialsByCountry(validatedCountryCode);
+
+    const clinicalTrials = fetchAllClinicalTrials();
+    const results = fetchClinicalTrialsByCountry(clinicalTrials, validatedCountryCode);
 
     const countryName = country!.name!
     results.map(result=> {
